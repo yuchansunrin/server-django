@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>새로운 질문 만들기</title>
+</head>
+<body>
+<script>
+    let choiceCount = 1;
+    function addChoice() {
+        const choicesDiv = document.getElementById('choices-container');
+        const newChoiceDiv = document.createElement('div');
+        newChoiceDiv.className = 'choice';
+        newChoiceDiv.innerHTML = `
+            <label>${++choiceCount}.</label>
+            <input type="text" name="choices" placeholder="선택지 입력" required>
+            <button type="button" onclick="removeChoice(this)">삭제</button>
+        `;
+        choicesDiv.appendChild(newChoiceDiv);
+    }
+    function removeChoice(button) {
+        const choiceDiv = button.parentElement;
+        choiceDiv.remove();
+    }
+    function addWeeks(weeks) {
+        let date = new Date();
+        date.setDate(date.getDate() + 7 * weeks);
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        document.getElementById('expire_date').value = `${year}-${month}-${day}`;
+        console.log(date);
+}
+</script>
+<h1>새로운 질문 만들기</h1>
+<form method="post">
+    {% csrf_token %}
+
+    <!-- 질문 입력 -->
+    <div class="form-group">
+        <label for="question_text">질문</label>
+        <input type="text" id="question_text" name="question_text" class="form-control" required>
+    </div>
+
+    <!-- 마감일 입력 -->
+    <div class="form-group">
+        <label for="expire_date">투표 마감일</label>
+        <input type="date" id="expire_date" name="expire_date" class="form-control" required>
+        <button type="button" onclick="addWeeks(1)" class="btn btn-secondary mt-2">+1주일</button>
+    </div><br>
+
+    <!-- 선택지 입력 -->
+    <div class="form-group">
+        <label>선택지</label>
+        <div id="choices-container">
+            <div class="input-group mb-2">
+                <label>1.</label>
+                <input type="text" name="choices" class="form-control" required>
+                <button type="button" class="btn btn-danger" onclick="removeChoice(this)">삭제</button>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="addChoice()">선택지 추가</button>
+    </div>
+    <br>
+
+    <input type="submit" value="질문 만들기">
+</form>
+</body>
+</html>

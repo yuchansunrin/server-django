@@ -1,3 +1,12 @@
+<header>
+    <h1>투표 시스템</h1>
+    <a href="/vote/create/">새로운 질문 만들기</a>
+</header>
+<hr>
+<h3>투표하기</h3>
+{% if created %}
+    <h2>새로운 질문이 생성되었습니다!</h2>
+{% endif %}
 {% if question_list %}
     <ul>
         {% for question in question_list %}
